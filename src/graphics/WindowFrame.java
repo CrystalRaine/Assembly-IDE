@@ -20,6 +20,9 @@ public class WindowFrame extends JFrame {
     public void setup(){
         CodeWindow code = new CodeWindow();
         this.add(code, BorderLayout.CENTER);
+
+        RegisterWindow regWind = new RegisterWindow();
+        this.add(regWind, BorderLayout.EAST);
     }
 
     public void update() {
