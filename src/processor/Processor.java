@@ -1,0 +1,96 @@
+package processor;
+
+import CodeInterpreter.CodeBody;
+import CodeInterpreter.Command;
+import CodeInterpreter.Line;
+import Exceptions.CompileTimeArgumentError;
+import Exceptions.IncorrectArgumentsException;
+import Exceptions.MemoryAddressNotDivisibleByEightException;
+import Exceptions.MemoryAddressOutOfBoundsException;
+import graphics.RegisterWindow;
+import graphics.WindowFrame;
+
+/**
+ * @author Raine
+ * created 9/16/2022
+ * @project Assm-Info
+ */
+public class Processor {
+
+    private static Register[] registers = new Register[32];
+    private static Memory memory = new Memory();
+    private static int currentLine = 0;
+    private static boolean exceptionEncountered = false;
+
+    public static void init(){
+        for (int i = 0; i< 32; i++){
+            registers[i] = new Register();
+        }
+    }
+
+    public static int getValueInRegister(int id){
+        return registers[id].getValue();
+    }
+
+    public static String getHexValueInRegister(int id) {
+        return registers[id].getHexValue();
+    }
+
+    public static String getBinaryValueInRegister(int id){
+        return registers[id].getBinaryValue();
+    }
+
+    public static void setRegisterValue(int id, int value) {
+        registers[id].setValue(value);
+    }
+
+    public static void runUntil(int endpoint) {
+        WindowFrame.clearLog(); // reset all memory
+        clearRegisters();
+        Memory.clear();
+        RegisterWindow.update();
+        Register.clearLastRegisterSet();    // clear debug statuses
+
+        CodeBody cb = new CodeBody();   // generate lines
+
+        exceptionEncountered = false;
+        currentLine = 0;
+        while(currentLine <= endpoint && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
+            runLine(cb, currentLine);
+            currentLine++;
+        }
+    }
+
+    private static void clearRegisters() {
+        for (Register r :
+                registers) {
+            r.setValue(0);
+        }
+    }
+
+    private static void runLine(CodeBody cb, int lineNumber){
+        Line l = cb.GetLine(lineNumber);
+        if(l != null) {
+            try {
+                Command c = l.generateCommand();    // generate the command for the line
+                c.run();
+            } catch (IncorrectArgumentsException e) {
+                WindowFrame.log("incorrect arguments used on line " + e.line + 1);
+                exceptionEncountered = true;
+            } catch (MemoryAddressNotDivisibleByEightException e) {
+                WindowFrame.log("Memory address used that is not %8 = 0");
+                exceptionEncountered = true;
+            } catch (MemoryAddressOutOfBoundsException e) {
+                WindowFrame.log("out of bounds memory access at memory address " + e.memoryPosition);
+                exceptionEncountered = true;
+            } catch (CompileTimeArgumentError e) {
+                WindowFrame.log("invalid argument at line " + e.line);
+                exceptionEncountered = true;
+            }
+        }
+    }
+
+    public static void setCurrentLine(int line){
+        currentLine = line;
+    }
+}

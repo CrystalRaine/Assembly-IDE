@@ -1,0 +1,6 @@
+ADDI x0, ZR, #5
+
+loop-start:
+PRINT x0
+SUBI x0, x0, #1
+CBNZ x0, loop-start
