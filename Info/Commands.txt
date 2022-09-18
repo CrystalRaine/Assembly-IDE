@@ -1,0 +1,19 @@
+ADD, Add registers, adds second and third registers and puts the result in the first register, ADD {reg dest}, {reg src}, {reg src}
+ADDI, Add immediate, adds second register and the constant putting the result in the first register, ADDI {reg dest}, {reg src}, {const}
+SUB, Subtract registers, adds second and third registers and puts the result in the first register, SUB {reg dest}, {reg src}, {reg src}
+SUBI, Subtract immediate, subtracts second register and the constant putting the result in the first register, SUBI {reg dest}, {reg src}, {const}
+
+B, Branch to label, always branches directly to the label's position, B {label}
+CBZ, Conditionally branch if zero, branches to the label's position if the register is zero, CBZ {reg src}, {label}
+CBNZ, Conditionally branch if not zero, branches to the labels position if the register is not zero, CBNZ {reg src}, {label}
+BL, Branch + link, branches to the label and puts the current line address in the link register (LR), BL {label}
+BR, Branch to register, branches to the line address in the given register, BR {reg src}
+
+LSL, Logical shift left, does a left bit-shift on the given register by the number of positions given. puts the result in source register, LSL {dest reg}, {src reg}, {constant}
+LSR, Logical shift right, does a right bit-shift on the given register by the number of positions given. puts the result in source register, LSR {dest reg}, {src reg}, {constant}
+
+LUDR, Load value from memory, loads a memory position given by {src reg} and {const} offset to {dest reg}, LUDR {dest reg}, [{src reg}, {const}]
+STUR, Store value to memory, stores a register given by {src reg 1} into memory position given by {src reg 2} and {const} offset, STUR {src reg 1}, [{src reg 2}, {const}]
+
+PRINT, Print register value, prints the register's value to log. DOES NOT EXIST IN ACTUAL ASSEMBLY LANGUAGE, PRINT {src reg}
+DUMP, Dump memory, prints memories filled content to log. DOES NOT EXIST IN ACTUAL ASSEMBLY LANGUAGE, DUMP

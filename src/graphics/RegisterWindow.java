@@ -16,6 +16,9 @@ public class RegisterWindow extends JPanel {
     public RegisterWindow(){
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
 
+        this.setBackground(Color.darkGray);
+        this.setForeground(Color.lightGray);
+
         JLabel spacer = new JLabel();
         spacer.setPreferredSize(new Dimension(200,0));
         this.add(spacer);

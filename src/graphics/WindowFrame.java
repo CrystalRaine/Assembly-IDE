@@ -1,5 +1,7 @@
 package graphics;
 
+import helpPages.HelpPane;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -18,12 +20,23 @@ public class WindowFrame extends JFrame {
 
     private static Output out;
     public static CodeWindow codeWindow;
+    public static HelpPane helpWindow;
     public static String currentFileName;
     public static FileSelection selector;
+    public static RegisterWindow regWind;
+    public static JScrollPane codeSC;
+    public static JScrollPane outSC;
+    public static OptionsPane op;
 
     public static final String PATH = "res/";
+    public static final String INFO_FOLDER = "Info/";
+
     public static final String EXTENSION = ".txt";
+
     public static final String DEFAULT_FILE_NAME = "Default" + EXTENSION;
+    public static final String HELP_FILE_NAME = "Commands.txt";
+
+    private boolean centerFilled = true;
 
     public WindowFrame() {
         this.setSize(1000,750);
@@ -49,23 +62,25 @@ public class WindowFrame extends JFrame {
     }
 
     public void setup(){
-        JScrollPane outSC = new JScrollPane(out);           // set up output
+        outSC = new JScrollPane(out);           // set up output
         outSC.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         outSC.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         outSC.setBorder(null);
         this.add(outSC, BorderLayout.WEST);
 
-        RegisterWindow regWind = new RegisterWindow();      // set up registers
+        regWind = new RegisterWindow();      // set up registers
         this.add(regWind, BorderLayout.EAST);
 
         selector = new FileSelection();
         this.add(selector, BorderLayout.NORTH);
 
-        OptionsPane op = new OptionsPane();
+        op = new OptionsPane();
         this.add(op, BorderLayout.SOUTH);
 
+        helpWindow = new HelpPane();
+
         codeWindow = new CodeWindow();                 // set up code window, and load from datafile
-        JScrollPane codeSC = new JScrollPane(codeWindow);
+        codeSC = new JScrollPane(codeWindow);
         codeSC.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         codeSC.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         codeSC.setBorder(null);
@@ -137,6 +152,31 @@ public class WindowFrame extends JFrame {
             sc.close();
         } catch (FileNotFoundException e){
             e.printStackTrace();
+        }
+    }
+
+    public void clearCenter(){
+        this.getContentPane().removeAll();
+        this.add(op, BorderLayout.SOUTH);
+        this.update();
+
+        centerFilled = false;
+    }
+
+    public void addInstructions(){
+        this.add(helpWindow, BorderLayout.CENTER);
+        centerFilled = true;
+    }
+
+    public void addCode(){
+        if(!centerFilled){
+            this.add(selector, BorderLayout.NORTH);
+            this.add(outSC, BorderLayout.WEST);
+            this.add(regWind, BorderLayout.EAST);
+            this.add(codeSC, BorderLayout.CENTER);
+            // leave SOUTH
+
+            centerFilled = true;
         }
     }
 

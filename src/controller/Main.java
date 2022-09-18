@@ -9,9 +9,10 @@ import processor.Processor;
  * @project Assm-Info
  */
 public class Main {
+    public static WindowFrame wf;
 
     public static void main(String[] args){
-        WindowFrame wf = new WindowFrame();
+        wf = new WindowFrame();
         Processor.init();
         wf.setup();
         wf.update();
