@@ -1,6 +1,6 @@
 package CodeInterpreter;
 
-import Exceptions.CompileTimeArgumentError;
+import Exceptions.*;
 
 /**
  * @author Raine
@@ -10,7 +10,7 @@ import Exceptions.CompileTimeArgumentError;
 public class Line {
 
     String line;
-    int lineNumber;
+    private int lineNumber;
 
     public Line(String line, int lineNumber){
         this.line = line;
@@ -38,8 +38,13 @@ public class Line {
 
     }
 
-    public Command generateCommand() throws CompileTimeArgumentError {
-        if(line.equals("") || line.equals("\n")) {
+    public Command generateCommand() throws CompileTimeArgumentError, IncorrectArgumentsException, MemoryAddressNotDivisibleByEightException, MemoryAddressOutOfBoundsException {
+
+        if(line.contains("//")){
+            line = line.substring(0, line.indexOf("//"));   // remove comments from line, comments start with "//"
+        }
+
+        if(line.equals("") || line.equals("\n")) {      // empty line is NONE command
             return new Command("NONE", lineNumber);
         }
 
@@ -59,23 +64,23 @@ public class Line {
 
             try {
                 if(arg.length() > 1) {
-                    if (arg.charAt(0) == '[') {
+                    if (arg.charAt(0) == '[') {                 // ignore square brackets. technically this implementation makes them optional
                         if (args.contains(",")) {
                             arg = arg.substring(1, args.indexOf(",")).strip();
                         } else {
                             arg = arg.substring(1).strip();
                         }
                     }
-                    if (arg.charAt(arg.length() - 1) == ']') {
+                    if (arg.charAt(arg.length() - 1) == ']') {  // ignore square brackets. technically this implementation makes them optional
                         arg = arg.substring(0, arg.length() - 1).strip();
                     }
 
                     if (arg.length() > 1) {
-                        if (arg.charAt(0) == 'x') {
+                        if (arg.charAt(0) == 'x') { // sort out registers
                             c.addRegister(Integer.parseInt(arg.substring(1)));
                         }
 
-                        if (arg.charAt(0) == '#') {
+                        if (arg.charAt(0) == '#') { // sort out constants
                             c.addConstant(Integer.parseInt(arg.substring(1)));
                         }
                     }
@@ -86,5 +91,9 @@ public class Line {
         } while (args.length() > 1);
 
         return c;
+    }
+
+    public int getLineNumber(){
+        return lineNumber;
     }
 }

@@ -1,5 +1,7 @@
 package CodeInterpreter;
 
+import Exceptions.*;
+import graphics.CodeWindow;
 import graphics.WindowFrame;
 
 import java.util.ArrayList;
@@ -21,9 +23,29 @@ public class CodeBody {
         labels.clear();
         Scanner sc = new Scanner(WindowFrame.codeWindow.getText());
         int lineNumber = 0;
+        while (sc.hasNextLine()) {
+            String line = sc.nextLine();
+            if (line.contains("@")) {
+                String annotation = line.substring(line.indexOf("@") + 1);    // grab annotation text
+                try {
+                    Annotation an = new Annotation(annotation);
+                    String added = an.activate();
+                    if(WindowFrame.codeWindow.getCursorLine() != lineNumber) {
+                        WindowFrame.codeWindow.setText(WindowFrame.codeWindow.getText().replaceFirst(line, added));
+                    }
+                } catch (Exception e) {
+                    WindowFrame.log("annotation error");
+                }
+            }
+            lineNumber++;
+        }
+
+        lineNumber = 0;
+        sc = new Scanner(WindowFrame.codeWindow.getText());
         while (sc.hasNextLine()){
             String nextLine = sc.nextLine();
             Line l = new Line(nextLine.strip(), lineNumber);   // generate each line
+
             l.getLabels();
 
             lines.add(l);   // add the line to the list
@@ -47,6 +69,9 @@ public class CodeBody {
 
     public static void addLabel(String labelName, int line) {
         labels.put(labelName, line);
+    }
 
+    public static void addLine(Line line){
+        lines.add(line);
     }
 }

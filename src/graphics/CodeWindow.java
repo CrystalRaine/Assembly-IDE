@@ -71,7 +71,7 @@ public class CodeWindow extends JTextArea {
         currentLine = getCursorLine();
     }
 
-    private int getCursorLine(){
+    public int getCursorLine(){
         int caretPos = getCaretPosition();
         int line = 0;
         String s = getText().substring(0, caretPos);

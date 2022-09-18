@@ -3,10 +3,7 @@ package processor;
 import CodeInterpreter.CodeBody;
 import CodeInterpreter.Command;
 import CodeInterpreter.Line;
-import Exceptions.CompileTimeArgumentError;
-import Exceptions.IncorrectArgumentsException;
-import Exceptions.MemoryAddressNotDivisibleByEightException;
-import Exceptions.MemoryAddressOutOfBoundsException;
+import Exceptions.*;
 import graphics.RegisterWindow;
 import graphics.WindowFrame;
 
@@ -21,6 +18,7 @@ public class Processor {
     private static Memory memory = new Memory();
     private static int currentLine = 0;
     private static boolean exceptionEncountered = false;
+    public static CodeBody codeBody;
 
     public static void init(){
         for (int i = 0; i< 32; i++){
@@ -49,19 +47,18 @@ public class Processor {
         clearRegisters();
         Memory.clear();
         RegisterWindow.update();
-        CodeBody cb = new CodeBody();   // generate lines
-
+        codeBody = new CodeBody();   // generate lines
         exceptionEncountered = false;
         currentLine = 0;
         while(currentLine <= endpoint && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
             Register.clearLastRegistersSetAndRetrieved();    // clear debug statuses
-            runLine(cb, currentLine);
+            runLine(currentLine);
             currentLine++;
         }
     }
 
-    private static void runLine(CodeBody cb, int lineNumber){
-        Line l = cb.GetLine(lineNumber);
+    private static void runLine(int lineNumber){
+        Line l = codeBody.GetLine(lineNumber);
         if(l != null) {
             try {
                 Command c = l.generateCommand();    // generate the command for the line

@@ -1,6 +1,5 @@
 package graphics;
 
-import processor.Memory;
 import processor.Processor;
 import processor.Register;
 
