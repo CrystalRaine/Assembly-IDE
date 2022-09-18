@@ -7,6 +7,9 @@ import processor.Processor;
  * @author Raine
  * created 9/16/2022
  * @project Assm-Info
+ *
+ * TODO: Copy code buttons "export"
+ * TODO: #Include filename feature
  */
 public class Main {
     public static WindowFrame wf;

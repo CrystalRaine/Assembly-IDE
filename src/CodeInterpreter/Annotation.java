@@ -80,11 +80,11 @@ public class Annotation {
             }
             case Funct -> {
                 require(0,1);
-                b.append("B " + names.get(0) + "-end\n"); //skip over body if not called
-                b.append(names.get(0) + "-start:\n");
+                b.append("B " + names.get(0) + "end\n"); //skip over body if not called
+                b.append(names.get(0) + ":\n");
                 b.append("\t\n");
                 b.append("BR LR\n");
-                b.append(names.get(0) + "-end:\n");
+                b.append(names.get(0) + "end:\n");
             }
             case MemInit -> {   // @MemInit x1 6 5 4 3 2 1...
                 requireRegister(names.get(0));

@@ -1,0 +1,12 @@
+
+
+BL fib
+
+
+B fibend
+fib:
+PRINT x0	
+BR LR
+fibend:
+
+
