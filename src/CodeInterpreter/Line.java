@@ -39,10 +39,12 @@ public class Line {
     }
 
     public Command generateCommand() throws CompileTimeArgumentError {
-        if(line.equals("") || line.equals("\n") || !line.contains(" ")) {
+        if(line.equals("") || line.equals("\n")) {
             return new Command("NONE", lineNumber);
         }
-        Command c = new Command(line.substring(0, line.indexOf(" ")), lineNumber);
+
+        int index = line.indexOf(" ");
+        Command c = new Command(line.substring(0, index == -1 ? line.length() : index), lineNumber);
         String args = line.substring(line.indexOf(" ") + 1);
 
         do {
@@ -55,17 +57,28 @@ public class Line {
                 args = "";
             }
 
-            // TODO: square brackets are a thing
             try {
-                if(arg.length() <= 1){
-                    throw new CompileTimeArgumentError(lineNumber);
-                }
-                if (arg.charAt(0) == 'x') {
-                    c.addRegister(Integer.parseInt(arg.substring(1)));
-                }
+                if(arg.length() > 1) {
+                    if (arg.charAt(0) == '[') {
+                        if (args.contains(",")) {
+                            arg = arg.substring(1, args.indexOf(",")).strip();
+                        } else {
+                            arg = arg.substring(1).strip();
+                        }
+                    }
+                    if (arg.charAt(arg.length() - 1) == ']') {
+                        arg = arg.substring(0, arg.length() - 1).strip();
+                    }
 
-                if (arg.charAt(0) == '#') {
-                    c.addConstant(Integer.parseInt(arg.substring(1)));
+                    if (arg.length() > 1) {
+                        if (arg.charAt(0) == 'x') {
+                            c.addRegister(Integer.parseInt(arg.substring(1)));
+                        }
+
+                        if (arg.charAt(0) == '#') {
+                            c.addConstant(Integer.parseInt(arg.substring(1)));
+                        }
+                    }
                 }
             } catch (NumberFormatException e) {
                 throw new CompileTimeArgumentError(lineNumber);

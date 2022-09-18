@@ -1,6 +1,6 @@
 package processor;
 
-import graphics.RegisterWindow;
+import java.util.ArrayList;
 
 /**
  * @author Raine
@@ -13,23 +13,24 @@ public class Register {
     private int id;
     private int value = 0;
     private static int nextId = 0;
-    private static int lastRegisterSet = 20;
-
+    private static int lastRegisterSet = -1;
+    private static ArrayList<Integer> lastRegistersRetrieved = new ArrayList<>();
     public Register(){
         id = nextId;
         nextId++;
     }
 
     public int getValue() {
+        lastRegistersRetrieved.add(this.id);
+        return value;
+    }
+
+    public int nonLoggingGetValue(){
         return value;
     }
 
     public String getHexValue(){
-        return Integer.toHexString(getValue());
-    }
-
-    public String getBinaryValue(){
-        return Integer.toBinaryString(getValue());
+        return Integer.toHexString(nonLoggingGetValue());
     }
 
     public void setValue(int value){
@@ -43,7 +44,12 @@ public class Register {
         return lastRegisterSet;
     }
 
-    public static void clearLastRegisterSet(){
+    public static ArrayList<Integer> getLastRegistersRetrieved() {
+        return lastRegistersRetrieved;
+    }
+
+    public static void clearLastRegistersSetAndRetrieved(){
         lastRegisterSet = -1;
+        lastRegistersRetrieved.clear();
     }
 }

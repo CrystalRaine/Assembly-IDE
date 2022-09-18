@@ -22,7 +22,8 @@ public class CodeBody {
         Scanner sc = new Scanner(WindowFrame.codeWindow.getText());
         int lineNumber = 0;
         while (sc.hasNextLine()){
-            Line l = new Line(sc.nextLine(), lineNumber);   // generate each line
+            String nextLine = sc.nextLine();
+            Line l = new Line(nextLine.strip(), lineNumber);   // generate each line
             l.getLabels();
 
             lines.add(l);   // add the line to the list

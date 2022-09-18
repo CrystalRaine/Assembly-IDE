@@ -4,6 +4,7 @@ import Exceptions.IncorrectArgumentsException;
 import Exceptions.MemoryAddressNotDivisibleByEightException;
 import Exceptions.MemoryAddressOutOfBoundsException;
 import graphics.WindowFrame;
+import processor.Memory;
 import processor.Processor;
 
 import java.util.ArrayList;
@@ -16,19 +17,14 @@ import java.util.ArrayList;
 public class Command {
 
     public enum Instruction {
-        NONE,
-        ADDI,
-        ADD,
-        SUBI,
-        SUB,
-        LUDR,
-        STUR,
-        B,
-        BR,
-        CBZ,
-        CBNZ,
-        PRINT,
-        DUMP
+        NONE, ADDI,
+        ADD, SUBI,
+        SUB, LUDR,
+        STUR, B,
+        BR, CBZ,
+        CBNZ, PRINT,
+        DUMP, LSL,
+        LSR, BL
     }
 
     private Instruction instruction;
@@ -48,7 +44,8 @@ public class Command {
         }
     }
 
-    public void run() throws IncorrectArgumentsException, MemoryAddressNotDivisibleByEightException, MemoryAddressOutOfBoundsException {
+    public void run() throws IncorrectArgumentsException, MemoryAddressNotDivisibleByEightException,
+            MemoryAddressOutOfBoundsException {
         switch (instruction){
             case NONE -> {} // do nothing
             case ADD -> {   // add with registers
@@ -79,6 +76,11 @@ public class Command {
                 require(1,0);
                 Processor.setCurrentLine(Processor.getValueInRegister(registers.get(0)));
             }
+            case BL -> {    // branch with Link
+                require(0,1);
+                Processor.setRegisterValue(30, line);
+                Processor.setCurrentLine(constants.get(0));
+            }
             case CBZ -> {   // conditional branch if zero
                 require(1,1);
                 if(Processor.getValueInRegister(registers.get(0)) == 0){
@@ -91,14 +93,34 @@ public class Command {
                     Processor.setCurrentLine(constants.get(0));
                 }
             }
-            case LUDR -> {} // load from memory
-            case STUR -> {} // store into memory
+            case LSL -> {
+                require(2, 1);
+                Processor.setRegisterValue(registers.get(0), Processor.getValueInRegister(registers.get(1)) <<
+                        constants.get(0));
+            }
+            case LSR -> {
+                require(2,1);
+                Processor.setRegisterValue(registers.get(0), Processor.getValueInRegister(registers.get(1)) >>
+                        constants.get(0));
+            }
+            case LUDR -> {  // load from memory
+                require(2, 1);
+                Processor.setRegisterValue(registers.get(0), Memory.getFromPosition(
+                        Processor.getValueInRegister(registers.get(1)) + constants.get(0)));
+            }
+            case STUR -> {  // store into memory
+                require(2, 1);
+                Memory.setMemoryAddress(Processor.getValueInRegister(registers.get(1)) + constants.get(0),
+                        Processor.getValueInRegister(registers.get(0)));
+            }
             case PRINT -> { // print to log
                 require(1,0);
                 WindowFrame.log(Processor.getValueInRegister(registers.get(0)));
                 registers.remove(0);
             }
-            case DUMP -> {} // dump memory content to log
+            case DUMP -> {  // dump memory content to log
+                WindowFrame.log(Memory.dump());
+            }
         }
         registers.clear();
         constants.clear();
@@ -110,6 +132,10 @@ public class Command {
 
     public void addConstant(int constant){
         constants.add(constant);
+    }
+
+    public String getCommandName(){
+        return instruction.toString();
     }
 
     private void require(int registers, int constants) throws IncorrectArgumentsException {

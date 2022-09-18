@@ -23,6 +23,9 @@ public class RegisterLine extends JPanel {
     private JLabel binaryValueLabel;
     private JTextField descriptionLine;
 
+    private static final Color GREEN_SELECTED = new Color(10,80,10);
+    private static final Color RED_SELECTED = new Color(70,20,20);
+
 
     public RegisterLine(){
         this.setLayout(new BoxLayout(this,BoxLayout.X_AXIS));
@@ -41,11 +44,9 @@ public class RegisterLine extends JPanel {
         }
         if(linkedID == 28) {
             descriptionLine.setText("(SP) Stack Pointer");
-            Processor.setRegisterValue(linkedID, (Memory.SIZE) * 8);
             this.add(descriptionLine);
         } else if (linkedID == 29){
             descriptionLine.setText("(FP) Frame Pointer");
-            Processor.setRegisterValue(linkedID, (Memory.SIZE) * 8);
             this.add(descriptionLine);
         } else if (linkedID == 30){
             descriptionLine.setText("(LR) return address");
@@ -69,7 +70,7 @@ public class RegisterLine extends JPanel {
         }
 
         idLabel = new JLabel("x" + linkedID + (linkedID < 10 ? "  " : ""));
-        valueLabel = new JLabel(String.format("%-4s", leftPad(Integer.toString(Processor.getValueInRegister(linkedID)),8,"  ")));
+        valueLabel = new JLabel(String.format("%-4s", leftPad(Integer.toString(Processor.nonLoggingGetValueInRegister(linkedID)),8,"  ")));
         hexValueLabel = new JLabel(String.format("  0x%8s   ", leftPad(Processor.getHexValueInRegister(linkedID), 8, "0")));
 
         valueLabel.setForeground(Color.lightGray);
@@ -92,19 +93,25 @@ public class RegisterLine extends JPanel {
     }
 
     void updateDisplay(){
-        valueLabel.setText(String.format("%-4s", leftPad(Integer.toString(Processor.getValueInRegister(linkedID)),8,"  ")));
+        valueLabel.setText(String.format("%-4s", leftPad(Integer.toString(Processor.nonLoggingGetValueInRegister(linkedID)),8,"  ")));
         hexValueLabel.setText(String.format("  0x%8s   ", leftPad(Processor.getHexValueInRegister(linkedID), 8, "0")));
 
         if(Register.getLastRegisterSet() == this.linkedID){
-            valueLabel.setBackground(Color.green);
-            hexValueLabel.setBackground(Color.green);
-            descriptionLine.setBackground(Color.green);
-            idLabel.setBackground(Color.green);
-        } else {
+            valueLabel.setBackground(GREEN_SELECTED);
+            hexValueLabel.setBackground(GREEN_SELECTED);
+            descriptionLine.setBackground(GREEN_SELECTED);
+            idLabel.setBackground(GREEN_SELECTED);
+        } else if(Register.getLastRegistersRetrieved().contains(this.linkedID)) {
+            valueLabel.setBackground(RED_SELECTED);
+            hexValueLabel.setBackground(RED_SELECTED);
+            descriptionLine.setBackground(RED_SELECTED);
+            idLabel.setBackground(RED_SELECTED);
+        }else{
             valueLabel.setBackground(Color.darkGray);
             hexValueLabel.setBackground(Color.darkGray);
             descriptionLine.setBackground(Color.darkGray);
             idLabel.setBackground(Color.darkGray);
+
         }
 
         revalidate();

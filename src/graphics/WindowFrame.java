@@ -4,10 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
-import static java.lang.System.identityHashCode;
 
 /**
  * @author Raine
@@ -18,12 +18,26 @@ public class WindowFrame extends JFrame {
 
     private static Output out;
     public static CodeWindow codeWindow;
+    public static String currentFileName;
+    public static FileSelection selector;
 
-    public WindowFrame(){
+    public WindowFrame() {
         this.setSize(1000,750);
         this.setVisible(true);
         this.setLayout(new BorderLayout());
         out = new Output();
+        if(Objects.requireNonNull(new File("res/").listFiles()).length != 0) {
+            currentFileName = Objects.requireNonNull(new File("res/").listFiles())[0].getName();
+        } else {
+            File f = new File("res/Default.txt");
+            try {
+                f.createNewFile();
+                currentFileName = Objects.requireNonNull(new File("res/").listFiles())[0].getName();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public static void clearLog() {
@@ -40,22 +54,19 @@ public class WindowFrame extends JFrame {
         RegisterWindow regWind = new RegisterWindow();      // set up registers
         this.add(regWind, BorderLayout.EAST);
 
+        selector = new FileSelection();
+        this.add(selector, BorderLayout.NORTH);
+
+        OptionsPane op = new OptionsPane();
+        this.add(op, BorderLayout.SOUTH);
+
         codeWindow = new CodeWindow();                 // set up code window, and load from datafile
         JScrollPane codeSC = new JScrollPane(codeWindow);
         codeSC.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         codeSC.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         codeSC.setBorder(null);
         this.add(codeSC, BorderLayout.CENTER);
-        try {
-            String s = "";
-            Scanner sc = new Scanner(new File("res/data.txt"));
-            while(sc.hasNextLine()){
-                s += sc.nextLine() + "\n";
-            }
-            codeWindow.setText(s);
-        } catch (FileNotFoundException e){
-            e.printStackTrace();
-        }
+        load();
 
         this.addWindowListener(new WindowListener() {
             @Override
@@ -65,13 +76,7 @@ public class WindowFrame extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(new File("res/data.txt")));
-                    writer.write(codeWindow.getText());
-                    writer.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                save();
                 exit(0);
             }
 
@@ -102,6 +107,33 @@ public class WindowFrame extends JFrame {
 
     public static void log(Object s){
         out.setText(out.getText() + "\n" + s.toString());
+    }
+
+    public static void save(){
+        try {
+            File f = new File("res/" + currentFileName);    // don't recreate files that are supposed to be deleted
+            if(f.exists()) {
+                BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+                writer.write(codeWindow.getText());
+                writer.close();
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void load(){
+        try {
+            String s = "";
+            Scanner sc = new Scanner(new File("res/" + currentFileName));
+            while(sc.hasNextLine()){
+                s += sc.nextLine() + "\n";
+            }
+            codeWindow.setText(s);
+            sc.close();
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        }
     }
 
     public void update() {

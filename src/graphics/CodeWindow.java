@@ -21,6 +21,7 @@ public class CodeWindow extends JTextArea {
 
     public CodeWindow(){
         this.setMargin(new Insets(5,5,5,5));
+        this.setCaretColor(new Color(150,100,150));
         this.setBackground(Color.darkGray);
         this.setForeground(Color.white);
         this.setTabSize(5);

@@ -32,12 +32,12 @@ public class Processor {
         return registers[id].getValue();
     }
 
-    public static String getHexValueInRegister(int id) {
-        return registers[id].getHexValue();
+    public static int nonLoggingGetValueInRegister(int id) {
+        return registers[id].nonLoggingGetValue();
     }
 
-    public static String getBinaryValueInRegister(int id){
-        return registers[id].getBinaryValue();
+    public static String getHexValueInRegister(int id) {
+        return registers[id].getHexValue();
     }
 
     public static void setRegisterValue(int id, int value) {
@@ -49,22 +49,14 @@ public class Processor {
         clearRegisters();
         Memory.clear();
         RegisterWindow.update();
-        Register.clearLastRegisterSet();    // clear debug statuses
-
         CodeBody cb = new CodeBody();   // generate lines
 
         exceptionEncountered = false;
         currentLine = 0;
         while(currentLine <= endpoint && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
+            Register.clearLastRegistersSetAndRetrieved();    // clear debug statuses
             runLine(cb, currentLine);
             currentLine++;
-        }
-    }
-
-    private static void clearRegisters() {
-        for (Register r :
-                registers) {
-            r.setValue(0);
         }
     }
 
@@ -81,7 +73,7 @@ public class Processor {
                 WindowFrame.log("Memory address used that is not %8 = 0");
                 exceptionEncountered = true;
             } catch (MemoryAddressOutOfBoundsException e) {
-                WindowFrame.log("out of bounds memory access at memory address " + e.memoryPosition);
+                WindowFrame.log("out of bounds memory access \nat memory address " + e.memoryPosition);
                 exceptionEncountered = true;
             } catch (CompileTimeArgumentError e) {
                 WindowFrame.log("invalid argument at line " + e.line);
@@ -90,7 +82,17 @@ public class Processor {
         }
     }
 
+    private static void clearRegisters() {
+        for (Register r :
+                registers) {
+            r.setValue(0);
+        }
+        registers[28].setValue(Memory.SIZE * 8);
+        registers[29].setValue(Memory.SIZE * 8);
+    }
+
     public static void setCurrentLine(int line){
         currentLine = line;
     }
+
 }
