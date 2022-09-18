@@ -34,14 +34,14 @@ public class OptionsPane extends JPanel {
         bag.setLayout(new GridBagLayout());
 
         deleteFile.addActionListener(e -> {
-            File f = new File("res/" + WindowFrame.currentFileName);
+            File f = new File(WindowFrame.PATH + WindowFrame.currentFileName);
             f.delete();
             WindowFrame.selector.removeTab(f.getName());
         });
 
         createFile.addActionListener(e -> {
             try {
-                File newFile = new File("res/" + text.getText() + ".txt");  // create actual file in the system
+                File newFile = new File(WindowFrame.PATH + text.getText() + WindowFrame.EXTENSION);  // create actual file in the system
                 newFile.createNewFile();
                 text.setText("");
 

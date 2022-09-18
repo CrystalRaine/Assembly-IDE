@@ -21,18 +21,22 @@ public class WindowFrame extends JFrame {
     public static String currentFileName;
     public static FileSelection selector;
 
+    public static final String PATH = "res/";
+    public static final String EXTENSION = ".txt";
+    public static final String DEFAULT_FILE_NAME = "Default" + EXTENSION;
+
     public WindowFrame() {
         this.setSize(1000,750);
         this.setVisible(true);
         this.setLayout(new BorderLayout());
         out = new Output();
-        if(Objects.requireNonNull(new File("res/").listFiles()).length != 0) {
-            currentFileName = Objects.requireNonNull(new File("res/").listFiles())[0].getName();
+        if(Objects.requireNonNull(new File(PATH).listFiles()).length != 0) {
+            currentFileName = Objects.requireNonNull(new File(PATH).listFiles())[0].getName();
         } else {
-            File f = new File("res/Default.txt");
+            File f = new File(PATH + DEFAULT_FILE_NAME);
             try {
                 f.createNewFile();
-                currentFileName = Objects.requireNonNull(new File("res/").listFiles())[0].getName();
+                currentFileName = Objects.requireNonNull(new File(PATH).listFiles())[0].getName();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -111,7 +115,7 @@ public class WindowFrame extends JFrame {
 
     public static void save(){
         try {
-            File f = new File("res/" + currentFileName);    // don't recreate files that are supposed to be deleted
+            File f = new File(PATH + currentFileName);    // don't recreate files that are supposed to be deleted
             if(f.exists()) {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(f));
                 writer.write(codeWindow.getText());
@@ -125,7 +129,7 @@ public class WindowFrame extends JFrame {
     public static void load(){
         try {
             String s = "";
-            Scanner sc = new Scanner(new File("res/" + currentFileName));
+            Scanner sc = new Scanner(new File(PATH + currentFileName));
             while(sc.hasNextLine()){
                 s += sc.nextLine() + "\n";
             }

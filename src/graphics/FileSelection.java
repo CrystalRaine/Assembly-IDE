@@ -26,7 +26,7 @@ public class FileSelection extends JPanel {
         this.setBackground(BACKGROUND_COLOR);
         this.setForeground(FOREGROUND_COLOR);
 
-        File resFolder = new File("res");
+        File resFolder = new File(WindowFrame.PATH);
 
         for (File f : resFolder.listFiles()) {
             addTab(f);
@@ -37,7 +37,7 @@ public class FileSelection extends JPanel {
     public void removeTab(String name){
         int i;
         for(i = 0; i < buttons.size(); i++){
-            if((buttons.get(i).getText().substring(2, buttons.get(i).getText().length()-1) + ".txt").equals(name)){
+            if((buttons.get(i).getText().substring(2, buttons.get(i).getText().length()-1) + WindowFrame.EXTENSION).equals(name)){
                 this.remove(buttons.get(i));
                 break;
             }
@@ -50,7 +50,7 @@ public class FileSelection extends JPanel {
         buttons.get(i-1).setEnabled(false);
         buttons.get(i-1).setBackground(SELECTED_COLOR);
 
-        WindowFrame.currentFileName = buttons.get(i-1).getText().substring(2, buttons.get(i-1).getText().length()-1) + ".txt";
+        WindowFrame.currentFileName = buttons.get(i-1).getText().substring(2, buttons.get(i-1).getText().length()-1) + WindowFrame.EXTENSION;
 
         revalidate();
         repaint();
