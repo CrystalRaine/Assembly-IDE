@@ -1,11 +1,15 @@
 package graphics;
 
+import CodeInterpreter.CodeBody;
 import CodeInterpreter.Command;
 import controller.Main;
+import processor.Processor;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,7 +32,10 @@ public class OptionsPane extends JPanel {
 
     private JButton deleteFile;
     private JButton createFile;
-    private JButton viewInstructions;
+    public static JButton viewInstructions;
+    public static JButton viewAnnotations;
+    public static JButton viewLibrary;
+    public static JButton copyText;
     private JTextField text;
 
     public OptionsPane(){
@@ -57,6 +64,9 @@ public class OptionsPane extends JPanel {
         deleteFile = new JButton("Delete Current File");
         createFile = new JButton("Create New File");
         viewInstructions = new JButton("View Instructions");
+        viewAnnotations = new JButton("View Annotations");
+        viewLibrary = new JButton("View Library");
+        copyText = new JButton("Copy code");
 
         text.setBorder(null);
 
@@ -72,23 +82,16 @@ public class OptionsPane extends JPanel {
             createFile();
         });
 
-        viewInstructions.addActionListener(e -> {
-            if(viewInstructions.getText().equals("View Instructions")) {
-                viewInstructions.setText("close instructions");
-                Main.wf.clearCenter();
-                Main.wf.addInstructions();
-                deleteFile.setEnabled(false);
-                createFile.setEnabled(false);
-            } else {
-                viewInstructions.setText("View Instructions");
-                Main.wf.clearCenter();
-                Main.wf.addCode();
-                deleteFile.setEnabled(true);
-                createFile.setEnabled(true);
+        viewInstructions.addActionListener(e -> view(1, viewInstructions, "View Instructions", "Hide Instructions"));
+        viewAnnotations.addActionListener(e -> view(2, viewAnnotations, "View Annotations", "Hide Annotations"));
+        viewLibrary.addActionListener(e -> view(3, viewLibrary, "View Library", "Hide Library"));
+
+        copyText.addActionListener(e -> {
+            if(Processor.codeBody != null) {
+                StringSelection stringSelection = new StringSelection(Processor.codeBody.getActualText());
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
             }
-            revalidate();
-            repaint();
-            Main.wf.update();
         });
 
         this.setBackground(BACKGROUND_COLOR);
@@ -101,12 +104,23 @@ public class OptionsPane extends JPanel {
         deleteFile.setBackground(BACKGROUND_COLOR);
         text.setBackground(BACKGROUND_COLOR.darker().darker());
         text.setForeground(FOREGROUND_COLOR.brighter());
+
         viewInstructions.setBackground(BACKGROUND_COLOR);
         viewInstructions.setForeground(FOREGROUND_COLOR);
+        viewAnnotations.setBackground(BACKGROUND_COLOR);
+        viewAnnotations.setForeground(FOREGROUND_COLOR);
+        viewLibrary.setBackground(BACKGROUND_COLOR);
+        viewLibrary.setForeground(FOREGROUND_COLOR);
+
+        copyText.setBackground(BACKGROUND_COLOR);
+        copyText.setForeground(FOREGROUND_COLOR);
 
         bag.add(createFile);
         bag.add(deleteFile);
         bag.add(viewInstructions);
+        bag.add(viewAnnotations);
+        bag.add(viewLibrary);
+        bag.add(copyText);
 
         this.add(text, BorderLayout.NORTH);
         this.add(bag, BorderLayout.CENTER);
@@ -126,5 +140,30 @@ public class OptionsPane extends JPanel {
         } else {
             text.setText("");
         }
+    }
+
+    private void view(int screen, JButton textChange, String text1, String text2){
+        if(textChange.getText().equals(text1)) {
+            textChange.setText(text2);
+            Main.wf.clearCenter();
+            deleteFile.setEnabled(false);
+            createFile.setEnabled(false);
+            viewAnnotations.setEnabled(false);
+            viewLibrary.setEnabled(false);
+            viewInstructions.setEnabled(false);
+            Main.wf.addHelp(screen);
+        } else {
+            textChange.setText(text1);
+            Main.wf.clearCenter();
+            Main.wf.addCode();
+            deleteFile.setEnabled(true);
+            createFile.setEnabled(true);
+            viewAnnotations.setEnabled(true);
+            viewLibrary.setEnabled(true);
+            viewInstructions.setEnabled(true);
+        }
+        revalidate();
+        repaint();
+        Main.wf.update();
     }
 }

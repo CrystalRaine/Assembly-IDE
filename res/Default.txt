@@ -1,12 +1,25 @@
+#include Fib
+
+ADDI x19, ZR, #0
+
+
+loopStart: 
+
+
+
+SUBI x20, x19, #25
+CBZ x20, escape
+ADDI x0, x19, #0
+
 
 
 BL fib
+PRINT x0
 
 
-B fibend
-fib:
-PRINT x0	
-BR LR
-fibend:
+
+ADDI x19, x19, #1
+B loopStart
+escape:
 
 

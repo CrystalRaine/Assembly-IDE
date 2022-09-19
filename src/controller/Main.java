@@ -8,8 +8,7 @@ import processor.Processor;
  * created 9/16/2022
  * @project Assm-Info
  *
- * TODO: Copy code buttons "export"
- * TODO: #Include filename feature
+ * TODO: fix wrong file content deletion on deleting file to the right
  */
 public class Main {
     public static WindowFrame wf;

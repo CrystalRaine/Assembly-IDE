@@ -21,6 +21,9 @@ public class WindowFrame extends JFrame {
     private static Output out;
     public static CodeWindow codeWindow;
     public static HelpPane helpWindow;
+    public static HelpPane annotationWindow;
+    public static HelpPane includeWindow;
+
     public static String currentFileName;
     public static FileSelection selector;
     public static RegisterWindow regWind;
@@ -30,11 +33,14 @@ public class WindowFrame extends JFrame {
 
     public static final String PATH = "res/";
     public static final String INFO_FOLDER = "Info/";
+    public static final String LIBRARY_PATH = "StandardLib/";
 
     public static final String EXTENSION = ".txt";
 
     public static final String DEFAULT_FILE_NAME = "Default" + EXTENSION;
     public static final String HELP_FILE_NAME = "Commands.txt";
+    public static final String ANNOTATION_HELP_FILE_NAME = "Annotations.txt";
+    public static final String STDLIB_HELP_FILE_NAME = "Includes.txt";
 
     private boolean centerFilled = true;
 
@@ -77,7 +83,9 @@ public class WindowFrame extends JFrame {
         op = new OptionsPane();
         this.add(op, BorderLayout.SOUTH);
 
-        helpWindow = new HelpPane();
+        helpWindow = new HelpPane(WindowFrame.HELP_FILE_NAME);
+        annotationWindow = new HelpPane(WindowFrame.ANNOTATION_HELP_FILE_NAME);
+        includeWindow = new HelpPane(WindowFrame.STDLIB_HELP_FILE_NAME);
 
         codeWindow = new CodeWindow();                 // set up code window, and load from datafile
         codeSC = new JScrollPane(codeWindow);
@@ -163,8 +171,21 @@ public class WindowFrame extends JFrame {
         centerFilled = false;
     }
 
-    public void addInstructions(){
-        this.add(helpWindow, BorderLayout.CENTER);
+    public void addHelp(int screen){
+        switch (screen) {
+            case 1:
+                this.add(helpWindow, BorderLayout.CENTER);
+                OptionsPane.viewInstructions.setEnabled(true);
+                break;
+            case 2:
+                this.add(annotationWindow, BorderLayout.CENTER);
+                OptionsPane.viewAnnotations.setEnabled(true);
+                break;
+            case 3:
+                this.add(includeWindow, BorderLayout.CENTER);
+                OptionsPane.viewLibrary.setEnabled(true);
+                break;
+        }
         centerFilled = true;
     }
 

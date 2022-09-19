@@ -96,4 +96,12 @@ public class Line {
     public int getLineNumber(){
         return lineNumber;
     }
+
+    public String getText() {
+        return line;
+    }
+
+    public void setLineNumber(int i) {
+        lineNumber = i;
+    }
 }

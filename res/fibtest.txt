@@ -1,30 +1,33 @@
 B fibend
 fib:
-
 CBZ x0, done
 SUBI x9, x0, #1
 CBZ x9, done
-
 SUBI SP, SP, #24 		// make space
 STUR x19, [SP, #0] 	// save values to stack
 STUR x30, [SP, #8]
 STUR x21, [SP, #16]
-
 ADDI x19, x0, #0	// back up the argument
 SUBI x0, x19, #1	// x0 = n-1
 BL fib
-
 ADDI x21, x0, #0
 SUBI x0, x19, #2
 BL fib
-
 ADD x0, x21, x0
-
 LUDR x19, [SP, #0] 	// save values to stack
 LUDR x30, [SP, #8]
 LUDR x21, [SP, #16]
 ADDI SP, SP, #24 		// shrink space
-
 done:
 BR LR
 fibend:
+ADDI x19, ZR, #0
+loopStart:
+SUBI x20, x19, #15
+CBZ x20, escape
+ADDI x0, x19, #0
+BL fib
+PRINT x0
+ADDI x19, x19, #1
+B loopStart
+escape:

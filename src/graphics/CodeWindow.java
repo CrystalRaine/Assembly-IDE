@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 public class CodeWindow extends JTextArea {
 
     private int currentLine;
+    private int offsetFromLoadedFiles = 0;
 
     public CodeWindow(){
         this.setMargin(new Insets(5,5,5,5));
@@ -75,12 +76,23 @@ public class CodeWindow extends JTextArea {
         int caretPos = getCaretPosition();
         int line = 0;
         String s = getText().substring(0, caretPos);
+        boolean prevIsNewline = false;
         for (char c : s.toCharArray()) {
             if (c == '\n') {
-                line++;
+                if (!prevIsNewline){
+                    line++;
+                }
+                prevIsNewline = true;
+            } else {
+                prevIsNewline = false;
             }
         }
-        return line;
+
+        return line + offsetFromLoadedFiles;
+    }
+
+    public void setOffsetFromLoadedFiles(int line){
+        offsetFromLoadedFiles = line;
     }
 
     private void onUpdate(){

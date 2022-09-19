@@ -22,13 +22,13 @@ public class HelpPane extends JPanel {
     private static final Color BACKGROUND_COLOR = new Color(50,50,50);
     private static final Color FOREGROUND_COLOR = new Color(150,150,150);
 
-    public HelpPane(){
+    public HelpPane(String file){
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(BACKGROUND_COLOR);
         this.setForeground(FOREGROUND_COLOR);
 
         try {
-            Scanner sc = new Scanner(new File(WindowFrame.INFO_FOLDER + WindowFrame.HELP_FILE_NAME));
+            Scanner sc = new Scanner(new File(WindowFrame.INFO_FOLDER + file));
             while(sc.hasNextLine()){
                 Scanner lineScanner = new Scanner(sc.nextLine());
                 lineScanner.useDelimiter(",");
