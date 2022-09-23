@@ -104,4 +104,8 @@ public class Line {
     public void setLineNumber(int i) {
         lineNumber = i;
     }
+
+    public int getLine() {
+        return lineNumber;
+    }
 }

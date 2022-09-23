@@ -1,0 +1,9 @@
+#include beta
+#include Fib
+ADDI x0, ZR, #9
+PRINT x0
+
+BL fib
+PRINT x0
+
+

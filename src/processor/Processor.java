@@ -7,6 +7,8 @@ import Exceptions.*;
 import graphics.RegisterWindow;
 import graphics.WindowFrame;
 
+import java.awt.*;
+
 /**
  * @author Raine
  * created 9/16/2022
@@ -42,7 +44,7 @@ public class Processor {
         registers[id].setValue(value);
     }
 
-    public static void runUntil(int endpoint) {
+    public static void runUntil() {
         WindowFrame.clearLog(); // reset all memory
         clearRegisters();
         Memory.clear();
@@ -50,7 +52,7 @@ public class Processor {
         codeBody = new CodeBody();   // generate lines
         exceptionEncountered = false;
         currentLine = 0;
-        while(currentLine <= endpoint && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
+        while(codeBody.GetLine(currentLine) != null && codeBody.GetLine(currentLine).getLine() <= WindowFrame.codeWindow.getCursorLine() && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
             Register.clearLastRegistersSetAndRetrieved();    // clear debug statuses
             runLine(currentLine);
             currentLine++;

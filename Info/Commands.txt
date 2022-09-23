@@ -15,5 +15,7 @@ LSR, Logical shift right, does a right bit-shift on the given register by the nu
 LUDR, Load value from memory, loads a memory position given by {src reg} and {const} offset to {dest reg}, LUDR {dest reg}, [{src reg}, {const}]
 STUR, Store value to memory, stores a register given by {src reg 1} into memory position given by {src reg 2} and {const} offset, STUR {src reg 1}, [{src reg 2}, {const}]
 
+HALT, stop the program, immediately stops the program at the current position and DUMPs, HALT
+
 PRINT, Print register value, prints the register's value to log. DOES NOT EXIST IN ACTUAL ASSEMBLY LANGUAGE, PRINT {src reg}
 DUMP, Dump memory, prints memories filled content to log. DOES NOT EXIST IN ACTUAL ASSEMBLY LANGUAGE, DUMP

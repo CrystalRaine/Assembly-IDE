@@ -24,7 +24,8 @@ public class Command {
         BR, CBZ,
         CBNZ, PRINT,
         DUMP, LSL,
-        LSR, BL
+        LSR, BL,
+        HALT
     }
 
     private Instruction instruction;
@@ -120,6 +121,9 @@ public class Command {
             }
             case DUMP -> {  // dump memory content to log
                 WindowFrame.log(Memory.dump());
+            }
+            case HALT -> {
+                Processor.setCurrentLine(Processor.codeBody.getLineCount());
             }
         }
         registers.clear();

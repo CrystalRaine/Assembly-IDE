@@ -1,5 +1,6 @@
 package graphics;
 
+import CodeInterpreter.Annotation;
 import processor.Processor;
 import processor.Register;
 
@@ -9,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Scanner;
 
 /**
  * @author Raine
@@ -40,9 +42,31 @@ public class CodeWindow extends JTextArea {
 
             @Override
             public void keyReleased(KeyEvent e) {
+                if(e.getKeyChar() == '\n' || e.getKeyChar() == '\t'){
+                    Scanner sc = new Scanner(WindowFrame.codeWindow.getText()); // replace annotations
+                    int lineNumber = 0;
+                    while (sc.hasNextLine()) {
+                        String line = sc.nextLine();
+                        if (line.contains("@")) {
+                            String annotation = line.substring(line.indexOf("@") + 1);    // grab annotation text
+                            try {
+                                Annotation an = new Annotation(annotation);
+                                String added = an.activate();
+                                int cursorPos = WindowFrame.codeWindow.getCaretPosition()-2;
+                                WindowFrame.codeWindow.setText(WindowFrame.codeWindow.getText().replaceFirst(line, added));
+                                WindowFrame.codeWindow.setCaretPosition(cursorPos + annotation.length() - 4);
+                            } catch (Exception ex) {
+                                WindowFrame.log("annotation error");
+                            }
+                        }
+                        lineNumber++;
+                    }
+                }
+
                 onUpdate();
             }
         });     // if arrows are used to move cursor
+
         this.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -96,8 +120,7 @@ public class CodeWindow extends JTextArea {
     }
 
     private void onUpdate(){
-        currentLine = getCursorLine();
-        Processor.runUntil(currentLine);
+        Processor.runUntil();
         RegisterWindow.update();
     }
 }

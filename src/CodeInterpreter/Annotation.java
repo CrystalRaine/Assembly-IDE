@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class Annotation {
 
     private enum Annotations{
-        INVALID, Funct, Load, Store, Init, MemInit
+        INVALID, Funct, Load, Store, Init, MemInit, While
     }
 
     private String annotationText;
@@ -82,9 +82,23 @@ public class Annotation {
                 require(0,1);
                 b.append("B " + names.get(0) + "end\n"); //skip over body if not called
                 b.append(names.get(0) + ":\n");
-                b.append("\t\n");
+                b.append("\n");
                 b.append("BR LR\n");
                 b.append(names.get(0) + "end:\n");
+            }
+            case While -> {
+                require(1,3);
+                requireRegister(names.get(0));
+                requireRegister(names.get(1));
+
+                b.append("ADDI " + names.get(0) + ", ZR, #0\n");
+                b.append("loopStart" + names.get(2) + ":\n");
+                b.append("SUBI " + names.get(1) + ", " + names.get(0) + ", #" + values.get(0) + "\n");
+                b.append("CBZ " + names.get(1) + ", loopEnd" + names.get(2) + "\n");
+                b.append("\n");
+                b.append("ADDI " + names.get(0) + ", " + names.get(0) + ", #1\n");
+                b.append("B loopStart" + names.get(2) + "\n");
+                b.append("loopEnd" + names.get(2) + ":\n");
             }
             case MemInit -> {   // @MemInit x1 6 5 4 3 2 1...
                 requireRegister(names.get(0));

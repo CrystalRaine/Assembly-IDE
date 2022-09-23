@@ -1,1 +1,14 @@
-ADDI x0, x0, #3
+ADDI x9, ZR, #6 	// initialize memory
+STUR x9, [x0, #0]
+ADDI x9, ZR, #7
+STUR x9, [x0, #8]
+ADDI x9, ZR, #8
+STUR x9, [x0, #16]
+ADDI x9, ZR, #9
+STUR x9, [x0, #24]
+ADDI x9, ZR, #0
+STUR x9, [x0, #32]
+ADDI x9, ZR, #1
+STUR x9, [x0, #40]
+ADDI x9, ZR, #0
+DUMP

@@ -36,9 +36,10 @@ public class FileSelection extends JPanel {
 
     public void removeTab(String name){
         int i;
-        for(i = 0; i < buttons.size(); i++){
-            if((buttons.get(i).getText().substring(2, buttons.get(i).getText().length()-1) + WindowFrame.EXTENSION).equals(name)){
+        for (i = 0; i < buttons.size(); i++) {
+            if ((buttons.get(i).getText().substring(2, buttons.get(i).getText().length() - 1) + WindowFrame.EXTENSION).equals(name)) {
                 this.remove(buttons.get(i));
+                buttons.remove(i);
                 break;
             }
         }
@@ -47,10 +48,14 @@ public class FileSelection extends JPanel {
             b1.setBackground(BACKGROUND_COLOR);
         }
 
-        buttons.get(i-1).setEnabled(false);
-        buttons.get(i-1).setBackground(SELECTED_COLOR);
+        buttons.get((((i - 1) % buttons.size()) + buttons.size()) % buttons.size()).setEnabled(false);
+        buttons.get((((i - 1) % buttons.size()) + buttons.size()) % buttons.size()).setBackground(SELECTED_COLOR);
 
-        WindowFrame.currentFileName = buttons.get(i-1).getText().substring(2, buttons.get(i-1).getText().length()-1) + WindowFrame.EXTENSION;
+        WindowFrame.currentFileName = buttons.get((((i - 1) % buttons.size()) + buttons.size()) % buttons.size())
+                .getText().substring(2, buttons.get((((i - 1) % buttons.size()) + buttons.size()) % buttons.size())
+                        .getText().length() - 1) + WindowFrame.EXTENSION;
+
+        WindowFrame.load();
 
         revalidate();
         repaint();

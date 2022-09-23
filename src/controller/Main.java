@@ -8,12 +8,14 @@ import processor.Processor;
  * created 9/16/2022
  * @project Assm-Info
  *
- * TODO: fix wrong file content deletion on deleting file to the right
+ * TODO: runToLine runs to wrong line
+ *
  */
 public class Main {
     public static WindowFrame wf;
 
     public static void main(String[] args){
+
         wf = new WindowFrame();
         Processor.init();
         wf.setup();

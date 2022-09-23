@@ -1,0 +1,2 @@
+ADDI x0, ZR, #9
+PRINT x0
