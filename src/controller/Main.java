@@ -8,8 +8,6 @@ import processor.Processor;
  * created 9/16/2022
  * @project Assm-Info
  *
- * TODO: runToLine runs to wrong line
- *
  */
 public class Main {
     public static WindowFrame wf;
