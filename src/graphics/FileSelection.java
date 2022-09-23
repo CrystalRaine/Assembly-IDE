@@ -2,15 +2,12 @@ package graphics;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
 /**
  * @author Raine
  * created 9/17/2022
- * @project Assm-Info
  */
 public class FileSelection extends JPanel {
 

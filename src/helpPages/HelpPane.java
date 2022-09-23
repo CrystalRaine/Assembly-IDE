@@ -6,7 +6,6 @@ import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,7 +14,6 @@ import java.util.Scanner;
 /**
  * @author Raine
  * created 9/17/2022
- * @project Assm-Info
  */
 public class HelpPane extends JPanel {
 

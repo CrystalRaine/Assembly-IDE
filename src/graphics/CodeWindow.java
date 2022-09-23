@@ -2,7 +2,6 @@ package graphics;
 
 import CodeInterpreter.Annotation;
 import processor.Processor;
-import processor.Register;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,6 @@ import java.util.Scanner;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class CodeWindow extends JTextArea {
 

@@ -5,9 +5,6 @@ import java.util.ArrayList;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
- *
- * stores the data for one register
  */
 public class Register {
     private int id;

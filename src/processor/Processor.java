@@ -7,12 +7,9 @@ import Exceptions.*;
 import graphics.RegisterWindow;
 import graphics.WindowFrame;
 
-import java.awt.*;
-
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class Processor {
 

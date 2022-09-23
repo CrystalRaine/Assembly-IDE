@@ -6,7 +6,6 @@ import java.awt.*;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class Output extends JTextArea {
 

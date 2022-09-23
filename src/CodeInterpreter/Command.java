@@ -12,7 +12,6 @@ import java.util.ArrayList;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class Command {
 

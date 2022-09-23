@@ -6,8 +6,6 @@ import processor.Processor;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
- *
  */
 public class Main {
     public static WindowFrame wf;

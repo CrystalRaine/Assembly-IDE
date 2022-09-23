@@ -1,7 +1,5 @@
 package CodeInterpreter;
 
-import Exceptions.*;
-import graphics.CodeWindow;
 import graphics.WindowFrame;
 
 import java.io.File;
@@ -11,7 +9,6 @@ import java.util.*;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class CodeBody {
 

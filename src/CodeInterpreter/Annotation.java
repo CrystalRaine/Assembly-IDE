@@ -1,14 +1,11 @@
 package CodeInterpreter;
 
-import Exceptions.*;
-
 import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
  * @author Raine
  * created 9/18/2022
- * @project Assm-Info
  */
 public class Annotation {
 
@@ -16,17 +13,16 @@ public class Annotation {
         INVALID, Funct, Load, Store, Init, MemInit, While
     }
 
-    private String annotationText;
     private Annotations type;
 
     private ArrayList<Integer> values = new ArrayList<>();
     private ArrayList<String> names = new ArrayList<>();
 
-    public Annotation(String annotationText) throws Exception {
-        this.annotationText = annotationText;
+    public Annotation(String annText) throws Exception {
+        String annotationText = annText;
 
-        if(this.annotationText.contains(" ")){
-            String name = this.annotationText.substring(0, this.annotationText.indexOf(" "));
+        if(annotationText.contains(" ")){
+            String name = annotationText.substring(0, annotationText.indexOf(" "));
             String args = annotationText.substring(annotationText.indexOf(" ")).strip();
 
             type = Annotations.INVALID;

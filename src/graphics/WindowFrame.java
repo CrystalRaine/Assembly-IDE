@@ -14,7 +14,6 @@ import static java.lang.System.exit;
 /**
  * @author Raine
  * created 9/16/2022
- * @project Assm-Info
  */
 public class WindowFrame extends JFrame {
 
@@ -151,12 +150,13 @@ public class WindowFrame extends JFrame {
 
     public static void load(){
         try {
-            String s = "";
+            StringBuilder s = new StringBuilder();
             Scanner sc = new Scanner(new File(PATH + currentFileName));
             while(sc.hasNextLine()){
-                s += sc.nextLine() + "\n";
+                s.append(sc.nextLine());
+                s.append("\n");
             }
-            codeWindow.setText(s);
+            codeWindow.setText(s.toString());
             sc.close();
         } catch (FileNotFoundException e){
             e.printStackTrace();
@@ -173,18 +173,18 @@ public class WindowFrame extends JFrame {
 
     public void addHelp(int screen){
         switch (screen) {
-            case 1:
+            case 1 -> {
                 this.add(helpWindow, BorderLayout.CENTER);
                 OptionsPane.viewInstructions.setEnabled(true);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 this.add(annotationWindow, BorderLayout.CENTER);
                 OptionsPane.viewAnnotations.setEnabled(true);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 this.add(includeWindow, BorderLayout.CENTER);
                 OptionsPane.viewLibrary.setEnabled(true);
-                break;
+            }
         }
         centerFilled = true;
     }
