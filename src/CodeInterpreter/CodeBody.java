@@ -41,7 +41,6 @@ public class CodeBody {
 
 
         WindowFrame.codeWindow.setOffsetFromLoadedFiles(getLineCount()-(pound));
-        System.out.println(pound);
 
         sc = new Scanner(WindowFrame.codeWindow.getText()); // reset scanner to scan open file
 
