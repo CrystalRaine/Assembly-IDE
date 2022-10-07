@@ -1,5 +1,0 @@
-#include Init
-
-// array starts in position in x19 (0x0)
-
-

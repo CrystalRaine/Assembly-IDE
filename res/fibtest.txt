@@ -15,6 +15,17 @@ PRINT x0
 ADDI x19, x19, #1
 B loopStart
 escape:
-DUMP
 
+
+ADDI x1, ZR, #0
+startLoop:
+SUBI x2, x1, #5
+CBZ x2, loopEndtest
+
+
+PRINT x0
+
+ADDI x1, x1, #1
+B startLoop
+loopEndtest:
 

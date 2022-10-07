@@ -75,7 +75,7 @@ public class Line {
                     }
 
                     if (arg.length() > 1) {
-                        if (arg.charAt(0) == 'x') { // sort out registers
+                        if (arg.charAt(0) == 'x' || arg.charAt(0) == 'X') { // sort out registers
                             c.addRegister(Integer.parseInt(arg.substring(1)));
                         }
 

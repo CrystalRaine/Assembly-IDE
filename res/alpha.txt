@@ -1,9 +1,11 @@
-#include beta
-#include Fib
-ADDI x0, ZR, #9
+ADDI x1, ZR, #9
+ADDI x2, ZR, #11
+
+SUBS x0, x1, x2
+B.LE jump
+
+DUMP
+
+jump:
+
 PRINT x0
-
-BL fib
-PRINT x0
-
-

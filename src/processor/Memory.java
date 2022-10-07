@@ -13,6 +13,16 @@ public class Memory {
 
     private static int[] memoryAddresses = new int[SIZE];
     private static boolean[] used = new boolean[SIZE];
+    /**
+     * Negative (N), Zero (Z), Overflow (V), Carry (C)
+     */
+    private static boolean[] flags = new boolean[4];
+    /**
+     * Negative (N), Zero (Z), Overflow (V), Carry (C)
+     */
+    public static boolean[] getFlags(){
+        return flags;
+    }
 
     public static void clear() {
         memoryAddresses = new int[SIZE];
@@ -51,5 +61,11 @@ public class Memory {
             throw new MemoryAddressOutOfBoundsException(pos);
         }
         return memoryAddresses[pos / 8];
+    }
+    /**
+     * Negative (N), Zero (Z), Overflow (V), Carry (C)
+     */
+    public static void setFlags(int flag, boolean value) {
+        flags[flag] = value;
     }
 }
