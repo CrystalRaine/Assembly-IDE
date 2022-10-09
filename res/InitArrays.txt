@@ -1,0 +1,17 @@
+// x0 is array size
+B fillend
+fill:
+ADDI x9, x0, #0
+
+loopStartloop:
+SUBIS x0, x0, #1
+B.NE loopEndloop
+
+
+
+B loopStartloop
+loopEndloop:
+BR LR
+fillend:
+
+DUMP

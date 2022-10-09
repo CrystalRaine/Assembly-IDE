@@ -4,6 +4,7 @@ import CodeInterpreter.CodeBody;
 import CodeInterpreter.Command;
 import CodeInterpreter.Line;
 import Exceptions.*;
+import controller.InfiniteLoopProtectionThread;
 import graphics.RegisterWindow;
 import graphics.WindowFrame;
 
@@ -18,6 +19,7 @@ public class Processor {
     private static int currentLine = 0;
     private static boolean exceptionEncountered = false;
     public static CodeBody codeBody;
+    public static boolean stopped =  false;
 
     public static void init(){
         for (int i = 0; i< 32; i++){
@@ -46,14 +48,18 @@ public class Processor {
         clearRegisters();
         Memory.clear();
         RegisterWindow.update();
+        InfiniteLoopProtectionThread loopProtection = new InfiniteLoopProtectionThread();
+        stopped = false;
+        loopProtection.run();
         codeBody = new CodeBody();   // generate lines
         exceptionEncountered = false;
         currentLine = 0;
-        while(codeBody.GetLine(currentLine) != null && codeBody.GetLine(currentLine).getLine() <= WindowFrame.codeWindow.getCursorLine() && !exceptionEncountered){  // grab each line one at a time. endpoint is always >= the max number of lines
+        while(codeBody.GetLine(currentLine) != null && codeBody.GetLine(currentLine).getLine() <= WindowFrame.codeWindow.getCursorLine() && !exceptionEncountered && !stopped){  // grab each line one at a time. endpoint is always >= the max number of lines
             Register.clearLastRegistersSetAndRetrieved();    // clear debug statuses
             runLine(currentLine);
             currentLine++;
         }
+        loopProtection.override = true;
     }
 
     private static void runLine(int lineNumber){
@@ -91,4 +97,7 @@ public class Processor {
         currentLine = line;
     }
 
+    public static void stop() {
+        stopped = true;
+    }
 }

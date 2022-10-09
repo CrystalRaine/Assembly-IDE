@@ -1,6 +1,0 @@
-#include alpha
-
-ADDI x2, ZR, #98
-
-PRINT x2
-
