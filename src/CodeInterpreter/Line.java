@@ -30,7 +30,7 @@ public class Line {
 
     public void replaceRegisterAliases() {
         line = line.replaceAll("XZR", "x31");  // replace each alias with the correct register
-        line = line.replaceAll("ZR", "x31");
+        line = line.replaceAll("xZR", "x31");
         line = line.replaceAll("LR", "x30");
         line = line.replaceAll("FP", "x29");
         line = line.replaceAll("SP", "x28");

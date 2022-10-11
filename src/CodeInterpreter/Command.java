@@ -39,10 +39,10 @@ public class Command {
     public enum Instruction {
         NONE, ADDI,
         ADD, SUBI,
-        SUB, LUDR,
+        SUB, LDUR,
         STUR, B,
         BR, CBZ,
-        CBNZ, PRINT,
+        CBNZ, PRNT,
         DUMP, LSL,
         LSR, BL,
         HALT, BCOND,
@@ -143,7 +143,7 @@ public class Command {
                 Processor.setRegisterValue(registers.get(0), Processor.getValueInRegister(registers.get(1)) >>
                         constants.get(0));
             }
-            case LUDR -> {  // load from memory
+            case LDUR -> {  // load from memory
                 require(2, 1);
                 Processor.setRegisterValue(registers.get(0), Memory.getFromPosition(
                         Processor.getValueInRegister(registers.get(1)) + constants.get(0)));
@@ -153,7 +153,7 @@ public class Command {
                 Memory.setMemoryAddress(Processor.getValueInRegister(registers.get(1)) + constants.get(0),
                         Processor.getValueInRegister(registers.get(0)));
             }
-            case PRINT -> { // print to log
+            case PRNT -> { // print to log
                 require(1,0);
                 WindowFrame.log(Processor.getValueInRegister(registers.get(0)));
                 registers.remove(0);

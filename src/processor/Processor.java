@@ -48,9 +48,9 @@ public class Processor {
         clearRegisters();
         Memory.clear();
         RegisterWindow.update();
-        InfiniteLoopProtectionThread loopProtection = new InfiniteLoopProtectionThread();
-        stopped = false;
-        loopProtection.run();
+        //InfiniteLoopProtectionThread loopProtection = new InfiniteLoopProtectionThread();
+        //stopped = false;
+        //loopProtection.run();
         codeBody = new CodeBody();   // generate lines
         exceptionEncountered = false;
         currentLine = 0;
@@ -59,7 +59,7 @@ public class Processor {
             runLine(currentLine);
             currentLine++;
         }
-        loopProtection.override = true;
+        //loopProtection.override = true;
     }
 
     private static void runLine(int lineNumber){
